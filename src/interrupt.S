@@ -12,6 +12,14 @@ irq\nr:
 	pushl	$\nr
 	jmp	isr_common_handler
 .endm
+.macro	SYS nr
+.global	sys\nr
+sys\nr:
+	pushl	$0
+	pushl	$\nr
+	jmp	isr_common_handler
+.endm
+
 
 ISR	0
 ISR	1
@@ -63,6 +71,8 @@ IRQ	45
 IRQ	46
 IRQ	47
 
+SYS 48
+
 .extern	interrupt_hadler
 
 isr_common_handler:
@@ -82,7 +92,7 @@ isr_common_handler:
 	call	interrupt_handler
 	mov		%eax,	%esp
 
-	mov		$0x23,	%ax
+	mov		$0x20,	%ax
 	mov		%ax,	%ds
 	mov		%ax,	%es
 

@@ -3,6 +3,7 @@
 #include "idt.h"
 #include "timer.h"
 #include "kb.h"
+#include "syscall.h"
 #include "asm.h"
 #include "string.h"
 #include "types.h"
@@ -57,6 +58,8 @@ extern void	irq45();
 extern void	irq46();
 extern void	irq47();
 
+extern void	sys48();
+
 static uint64_t	idt[256];
 uint32_t		tss[32]	= { 0, 0, 0x10};
 
@@ -68,6 +71,7 @@ static const void	(*isr[])	= {
 
 	irq32, irq33, irq34, irq35, irq36, irq37, irq38, irq39,
 	irq40, irq41, irq42, irq43, irq44, irq45, irq46, irq47,
+	sys48,
 };
 
 void	idt_entry_init	(int32_t	index,	uint32_t	base,
@@ -114,12 +118,10 @@ struct	regs_t*	interrupt_handler	(struct	regs_t*	cpu)	{
 		if(cpu->int_no	>= 0x22)	//don't pit
 			kprintf("IRQ	%d\n", cpu->int_no);
 		pic_send_end_int(cpu->int_no - 0x20);
-	} else	{
+	} else	if(cpu->int_no >= 48)	{
+			syscall(cpu->int_no);
+	} else {
 		kprintf("int	%d\n", cpu->int_no);
-	}
-
-	if(cpu->int_no	== 32)	{
-		// software interrupt
 	}
 
 	return new;
