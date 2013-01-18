@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#define	ARRAY_SIZE(a)	(sizeof(a) / sizeof(a[0]))
+
 #define true 1
 #define false 0
 
@@ -17,8 +19,8 @@ typedef signed   char 		int8_t;
 typedef uint32_t size_t;
 typedef uint32_t uintptr_t;
 
-#define	ARRAY_SIZE(a)	(sizeof(a) / sizeof(a[0]))
-
+struct list_head	{
+	struct list_head *next, *prev;
+};
 
 #endif
-

@@ -50,7 +50,7 @@ void k_main(struct mb_info_t *mb_info)
 	asm volatile ("sti");
 
 //	data structure list sample ;
-/*
+
 	LIST_HEAD(first);
 	INIT_LIST_HEAD(&first);
 
@@ -61,8 +61,6 @@ void k_main(struct mb_info_t *mb_info)
 	kprintf("first.next  = %d\n", first.next);
 	kprintf("second      = %d\n", &second);
 	kprintf("second.prev = %d", second.prev);
-*/
-
 
 	while(1);
 }

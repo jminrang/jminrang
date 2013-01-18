@@ -1,11 +1,27 @@
 #include "cpu_check.h"
 #include "console.h"
+#include "string.h"
 #include "types.h"
+
+//	check cpu feature 
 
 uint32_t	cpu_vendor[3];
 struct cpu_features	cpu;
 
+static int	has_eflag	(uint32_t mask);
+
 void	cpu_check	(void)	{
+
+	int32_t	err;
+
+	memset(&cpu.flags, 0, sizeof(cpu.flags));
+	cpu.level	= 3;
+
+	if(has_eflag(0x0004000))
+			cpu.level	= 4;
+
+//	start this area
+//	flag register check 
 
 	uint32_t	max_level, max_amd_level;
 	uint32_t	tfms;
@@ -42,4 +58,24 @@ void	cpu_check	(void)	{
 						 "=d"(cpu.flags[1])
 						::"ebx");
 	}
+}
+
+static int	has_eflag	(uint32_t mask)	{
+	uint32_t	f0, f1;
+
+	asm volatile	("pushfl		\n\t" // twice for save eflags 
+					 "pushfl		\n\t"
+					 "popl	%0		\n\t"
+					 "movl	%0, %1	\n\t"
+					 "xorl	%2,	%1	\n\t"
+					 "pushl	%1		\n\t"
+					 "popfl			\n\t"
+					 "pushfl		\n\t"
+					 "popl	%1		\n\t"
+					 "popfl"
+					:"=&r" (f0), "=&r" (f1)
+					:"ri" (mask));
+
+	return	!!((f0^f1) & mask);
+
 }

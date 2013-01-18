@@ -6,7 +6,7 @@
 struct	cpu_features	{
 	uint32_t	level;
 	uint32_t	model;
-	uint32_t	flags[32];
+	uint32_t	flags[10];
 };
 
 void	cpu_check	(void);

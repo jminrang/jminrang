@@ -37,7 +37,7 @@ check_machine:
 c:		clean
 clean:
 	@clear
-	@rm $(OBJS) $(TARGET) Env.txt ./debug/*
+	@rm $(OBJS) $(TARGET) Env.txt ./debug/* $(SYM)
 
 t:		test
 test:
