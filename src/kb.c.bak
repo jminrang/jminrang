@@ -1,0 +1,136 @@
+#include "kb.h"
+#include "console.h"
+#include "asm.h"
+#include "types.h"
+
+const uint8_t	normal_map[128]	=	{
+	0x0,	0x0,	'1',	'2',	'3',	'4',	'5',	'6',	'7',	'8',	'9',	'0',	'-',	'=',	'\b',
+	'\t',	'q',	'w',	'e',	'r',	't',	'y',	'u',	'i',	'o',	'p',	'[',	']',	'\n',
+	0x0,	'a',	's',	'd',	'f',	'g',	'h',	'j',	'k',	'l',	';',	'\'',	'`',	0x0,	'\\',
+	'z',	'x',	'c',	'v',	'b',	'n',	'm',	',',	'.',	'/',	0x0,	'*',	0x0,	' ',	0x0,
+	F1,		F2,		F3,		F4,		F5,		F6,		F7,		F8,		F9,		F10,
+};
+
+const uint8_t	shift_map[128]	=	{
+	0x0,	0x0,	'!',	'@',	'#',	'$',	'%',	'^',	'&',	'*',	'(',	')',	'_',	'+',	'\b',
+	'\t',	'Q',	'W',	'E',	'R',	'T',	'Y',	'U',	'I',	'O',	'P',	'{',	'}',	'\n',
+	0x0,	'A',	'S',	'D',	'F',	'G',	'H',	'J',	'K',	'L',	':',	'"',	'~',	0x0,	'|',
+	'Z',	'X',	'C',	'V',	'B',	'N',	'M',	'<',	'>',	'?',	0x0,	'*',	0x0,	' ',
+};
+
+#define	C(x)	(x - '@')
+const uint8_t	ctrl_map[128]	=	{
+	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,	0x0,
+	0x0,	C('Q'),	C('W'),	C('E'),	C('R'),	C('T'),	C('Y'),	C('U'),	C('I'),	C('O'),	C('P'),	0x0,	0x0,	'\r',
+	0x0,	C('A'),	C('S'),	C('D'),	C('F'),	C('G'),	C('H'),	C('J'),	C('K'),	C('L'),	0x0,	0x0,	0x0,
+	0x0,	C('\\'),C('Z'),	C('X'),	C('C'),	C('V'),	C('B'),	C('N'),	C('M'),	0x0,	0x0,	C('/'),	0x0,	0x0,
+};
+
+
+
+static uint8_t	shiftmap[128]	=	{
+	[0x1D]	= CTL,
+	[0x2A]	= SHIFT,
+	[0x36]	= SHIFT,
+	[0x38]	= ALT,
+};
+
+static uint8_t	togglemap[128]	=	{
+	[0x3A]	= CAPSLOCK,
+	[0x45]	= NUMLOCK,
+	[0x46]	= SCROLLLOCK,
+};
+
+const uint8_t	e0_map[128]		=	{
+	[0x1C]	= '\n',
+	[0x1D]	= KEY_RCTRL,
+	[0x35]	= '/',
+	[0x38]	= KEY_RALT,
+	[0x48]	= KEY_UP,
+	[0x47]	= KEY_HOME,
+	[0x49]	= KEY_PG_UP,
+	[0x4B]	= KEY_LEFT,
+	[0x4D]	= KEY_RIGHT,
+	[0x4F]	= KEY_END,
+	[0x50]	= KEY_DOWN,
+	[0x51]	= KEY_PG_DOWN,
+	[0x52]	= KEY_INS,
+	[0x53]	= KEY_DEL,
+	[0x5B]	= KEY_LGUI,
+	[0x5C]	= KEY_RGUI,
+
+};
+
+const uint8_t	*kb_map[4]		=	{
+	normal_map,
+	shift_map,
+	ctrl_map,
+	ctrl_map
+};
+
+void	kb_init	(void)	{
+	outb(0x21,	inb(0x21) & 0xFD);
+}
+
+void	kb_irq	(void)	{
+	int32_t	c	= 0;;
+	int8_t	val;
+	
+	while(( c	== read_kbd())	!= -1)	{
+		if(c == 0)
+			continue;
+		val	= (int8_t) c;
+
+		process_char(val);
+	}
+
+	val	= inb(0x61);
+	outb(0x61,	val | 0x80);
+	outb(0x61,	val & 0x7F);
+	outb(0x20,	0x20);
+}
+
+void	process_char	(uint8_t	c)	{
+	if(c <= 0x7F)
+		putch(c);
+}
+
+int32_t		read_kbd	(void)	{
+	int8_t	val;
+	int32_t	scan, _scan;
+	static uint32_t	flag;
+	int32_t	e0_flag	= 0;
+
+	if((inb(0x64) & 0x01) == 0)
+		return -1;
+
+	scan	= inb(0x60);
+	_scan	= scan & 0x7F;
+
+	if(scan	== 0xE0)	{
+		flag	|= E0ESC;
+		return	0;
+	} else if( scan & 0x80)	{
+		flag	&= ~(shiftmap[_scan] | E0ESC);
+		return	0;
+	} else if( flag & E0ESC)	{
+		flag	&= ~E0ESC;
+		e0_flag	= 1;
+	}
+
+	flag	|= shiftmap[_scan];
+	flag	^= togglemap[_scan];
+
+	if(e0_flag)
+		return e0_map[_scan];
+
+	val	= kb_map[flag & (CTL | SHIFT)][_scan];
+
+	if(flag	& CAPSLOCK)	{
+		if('a'	<= val && val <= 'z')	
+			val	+= 'A' - 'a';
+		else if('A' <= val && val <= 'Z')
+			val += 'a' - 'A';
+	}
+	return	val;
+}
