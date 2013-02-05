@@ -57,6 +57,8 @@ void k_main(struct mb_info_t *mb_info)
 	LIST_HEAD(second);
 	list_add(&second, &first);
 
+	kprintf("\n\n list test\n\n\n");
+
 	kprintf("first       = %d\n", &first);
 	kprintf("first.next  = %d\n", first.next);
 	kprintf("second      = %d\n", &second);
