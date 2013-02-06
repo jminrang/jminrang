@@ -12,7 +12,7 @@ static int	has_eflag	(uint32_t mask);
 
 void	cpu_check	(void)	{
 
-	int32_t	err;
+//	int32_t	err;
 
 	memset(&cpu.flags, 0, sizeof(cpu.flags));
 	cpu.level	= 3;
