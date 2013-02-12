@@ -1,0 +1,485 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+t                   0x18              src/main.o
+gdtr                0x6               src/main.o
+user_context        0x4               src/vmm.o
+cpu                 0x30              src/cpu_check.o
+kernel_context      0x4               src/vmm.o
+cpu_vendor          0xc               src/cpu_check.o
+idtr                0x6               src/main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000100000                . = 0x100000
+                0x0000000000100000                PROVIDE (kernel_start, ABSOLUTE (.))
+
+.text           0x0000000000100000     0x20f7
+ *(multiboot)
+ multiboot      0x0000000000100000        0xc src/start.o
+ *(.text)
+ .text          0x000000000010000c       0xf4 src/main.o
+                0x000000000010000c                k_main
+ .text          0x0000000000100100      0x3e6 src/pmm.o
+                0x0000000000100100                pmm_init
+                0x0000000000100236                pmm_alloc
+                0x00000000001002df                pmm_free
+                0x0000000000100322                pmm_mark_used
+                0x0000000000100367                pmm_free_pages
+                0x00000000001003d9                pmm_used_pages
+                0x00000000001003ee                pmm_test
+ *fill*         0x00000000001004e6        0x2 
+ .text          0x00000000001004e8      0x15a src/cpu_check.o
+                0x00000000001004e8                cpu_check
+ *fill*         0x0000000000100642        0x2 
+ .text          0x0000000000100644       0x6f src/syscall.o
+                0x0000000000100644                sys_open
+                0x000000000010064e                sys_create
+                0x0000000000100658                sys_read
+                0x0000000000100662                sys_write
+                0x000000000010066c                sys_close
+                0x0000000000100676                syscall
+ *fill*         0x00000000001006b3        0x1 
+ .text          0x00000000001006b4       0x23 src/heap.o
+                0x00000000001006b4                kmalloc_int
+ *fill*         0x00000000001006d7        0x1 
+ .text          0x00000000001006d8      0x303 src/gdt.o
+                0x00000000001006d8                gdt_init
+                0x00000000001007ec                gdt_entry_init
+ *fill*         0x00000000001009db        0x1 
+ .text          0x00000000001009dc      0x893 src/console.o
+                0x00000000001009dc                attribut
+                0x0000000000100a0c                set_attribut
+                0x0000000000100a3a                gotoxy
+                0x0000000000100a6c                move_cursor
+                0x0000000000100acf                scroll_down
+                0x0000000000100be4                putch
+                0x0000000000100ddb                puts
+                0x0000000000100e04                clear_screen
+                0x0000000000100e74                text_out
+                0x0000000000100ee8                getypos
+                0x0000000000100f31                getxpos
+                0x0000000000100f58                kprintf
+ *fill*         0x000000000010126f        0x1 
+ .text          0x0000000000101270      0x242 src/rtc.o
+                0x0000000000101270                get_cmos_time
+                0x0000000000101395                rtc_cmos_read
+                0x00000000001013ca                rtc_cmos_write
+                0x0000000000101406                bcd2bin
+                0x0000000000101437                bcd2bin_hour
+                0x000000000010146b                bin2bcd
+ *fill*         0x00000000001014b2        0x2 
+ .text          0x00000000001014b4      0x1d3 src/idt.o
+                0x00000000001014b4                idt_entry_init
+                0x0000000000101557                idt_init
+                0x00000000001015b7                interrupt_handler
+ *fill*         0x0000000000101687        0x1 
+ .text          0x0000000000101688      0x1e6 src/vmm.o
+                0x0000000000101688                vmm_init
+                0x000000000010173b                vmm_create_context
+                0x0000000000101781                vmm_map_page
+                0x0000000000101861                vmm_activate_context
+ *fill*         0x000000000010186e        0x2 
+ .text          0x0000000000101870      0x23b src/kb.o
+                0x0000000000101870                kb_init
+                0x00000000001018c7                kb_irq
+                0x000000000010193e                kb_char
+                0x0000000000101958                kb_input
+ *fill*         0x0000000000101aab        0x1 
+ .text          0x0000000000101aac      0x1b9 src/string.o
+                0x0000000000101aac                memcpy
+                0x0000000000101ae2                memset
+                0x0000000000101b0f                memsetw
+                0x0000000000101b3e                memmove
+                0x0000000000101c13                strcpy
+                0x0000000000101c3a                strlen
+ *fill*         0x0000000000101c65        0x3 
+ .text          0x0000000000101c68      0x149 src/pic.o
+                0x0000000000101c68                pic_init
+                0x0000000000101d38                pic_mask_irq
+                0x0000000000101d7b                pic_send_end_int
+ *fill*         0x0000000000101db1        0x3 
+ .text          0x0000000000101db4      0x148 src/timer.o
+                0x0000000000101db4                timer_init
+                0x0000000000101e1b                timer_irq
+ .text          0x0000000000101efc       0x48 src/asm.o
+                0x0000000000101efc                outb
+                0x0000000000101f1a                inb
+ .text          0x0000000000101f44      0x1a1 src/interrupt.o
+                0x0000000000101f44                isr0
+                0x0000000000101f4d                isr1
+                0x0000000000101f56                isr2
+                0x0000000000101f5f                isr3
+                0x0000000000101f68                isr4
+                0x0000000000101f71                isr5
+                0x0000000000101f7a                isr6
+                0x0000000000101f83                isr7
+                0x0000000000101f8c                isr8
+                0x0000000000101f95                isr9
+                0x0000000000101f9e                isr10
+                0x0000000000101fa7                isr11
+                0x0000000000101fb0                isr12
+                0x0000000000101fb9                isr13
+                0x0000000000101fc2                isr14
+                0x0000000000101fcb                isr15
+                0x0000000000101fd4                isr16
+                0x0000000000101fdd                isr17
+                0x0000000000101fe6                isr18
+                0x0000000000101fef                isr19
+                0x0000000000101ff8                isr20
+                0x0000000000102001                isr21
+                0x000000000010200a                isr22
+                0x0000000000102013                isr23
+                0x000000000010201c                isr24
+                0x0000000000102025                isr25
+                0x000000000010202e                isr26
+                0x0000000000102037                isr27
+                0x000000000010203d                isr28
+                0x0000000000102043                isr29
+                0x0000000000102049                isr30
+                0x000000000010204f                isr31
+                0x0000000000102055                irq32
+                0x000000000010205b                irq33
+                0x0000000000102061                irq34
+                0x0000000000102067                irq35
+                0x000000000010206d                irq36
+                0x0000000000102073                irq37
+                0x0000000000102079                irq38
+                0x000000000010207f                irq39
+                0x0000000000102085                irq40
+                0x000000000010208b                irq41
+                0x0000000000102091                irq42
+                0x0000000000102097                irq43
+                0x000000000010209d                irq44
+                0x00000000001020a3                irq45
+                0x00000000001020a9                irq46
+                0x00000000001020af                irq47
+                0x00000000001020b5                sys48
+ *fill*         0x00000000001020e5        0x3 
+ .text          0x00000000001020e8        0xf src/start.o
+                0x00000000001020e8                _start
+
+.iplt           0x0000000000102100        0x0
+ .iplt          0x0000000000000000        0x0 src/main.o
+
+.data           0x0000000000103000      0x6b4
+ *(.data)
+ .data          0x0000000000103000        0x0 src/main.o
+ .data          0x0000000000103000        0x0 src/pmm.o
+ .data          0x0000000000103000        0x0 src/cpu_check.o
+ .data          0x0000000000103000       0x18 src/syscall.o
+ .data          0x0000000000103018        0x4 src/heap.o
+                0x0000000000103018                placement
+ .data          0x000000000010301c        0x0 src/gdt.o
+ .data          0x000000000010301c       0x16 src/console.o
+                0x000000000010301c                pScreen
+                0x0000000000103020                gattr
+ *fill*         0x0000000000103032        0x2 
+ .data          0x0000000000103034        0x0 src/rtc.o
+ *fill*         0x0000000000103034        0xc 
+ .data          0x0000000000103040      0x144 src/idt.o
+                0x0000000000103040                tss
+ .data          0x0000000000103184        0x0 src/vmm.o
+ *fill*         0x0000000000103184       0x1c 
+ .data          0x00000000001031a0      0x510 src/kb.o
+ .data          0x00000000001036b0        0x0 src/string.o
+ .data          0x00000000001036b0        0x0 src/pic.o
+ .data          0x00000000001036b0        0x4 src/timer.o
+                0x00000000001036b0                reent
+ .data          0x00000000001036b4        0x0 src/asm.o
+ .data          0x00000000001036b4        0x0 src/interrupt.o
+ .data          0x00000000001036b4        0x0 src/start.o
+
+.igot.plt       0x00000000001036b4        0x0
+ .igot.plt      0x0000000000000000        0x0 src/main.o
+
+.rodata         0x0000000000104000      0x2c7
+ *(.rodata)
+ .rodata        0x0000000000104000      0x1f2 src/main.o
+ .rodata        0x00000000001041f2       0x1d src/syscall.o
+ *fill*         0x000000000010420f        0x1 
+ .rodata        0x0000000000104210       0x84 src/console.o
+ .rodata        0x0000000000104294       0x24 src/idt.o
+ .rodata        0x00000000001042b8        0xf src/timer.o
+
+.eh_frame       0x00000000001042c8      0x834
+ .eh_frame      0x00000000001042c8       0x38 src/main.o
+ .eh_frame      0x0000000000104300      0x10c src/pmm.o
+                                        0x124 (size before relaxing)
+ .eh_frame      0x000000000010440c       0x54 src/cpu_check.o
+                                         0x6c (size before relaxing)
+ .eh_frame      0x0000000000104460       0xc0 src/syscall.o
+                                         0xd8 (size before relaxing)
+ .eh_frame      0x0000000000104520       0x20 src/heap.o
+                                         0x38 (size before relaxing)
+ .eh_frame      0x0000000000104540       0x50 src/gdt.o
+                                         0x68 (size before relaxing)
+ .eh_frame      0x0000000000104590      0x194 src/console.o
+                                        0x1ac (size before relaxing)
+ .eh_frame      0x0000000000104724       0xc4 src/rtc.o
+                                         0xdc (size before relaxing)
+ .eh_frame      0x00000000001047e8       0x6c src/idt.o
+                                         0x84 (size before relaxing)
+ .eh_frame      0x0000000000104854       0x84 src/vmm.o
+                                         0x9c (size before relaxing)
+ .eh_frame      0x00000000001048d8       0x80 src/kb.o
+                                         0x98 (size before relaxing)
+ .eh_frame      0x0000000000104958       0xc0 src/string.o
+                                         0xd8 (size before relaxing)
+ .eh_frame      0x0000000000104a18       0x60 src/pic.o
+                                         0x78 (size before relaxing)
+ .eh_frame      0x0000000000104a78       0x40 src/timer.o
+                                         0x58 (size before relaxing)
+ .eh_frame      0x0000000000104ab8       0x44 src/asm.o
+                                         0x5c (size before relaxing)
+
+.rel.dyn        0x0000000000104afc        0x0
+ .rel.iplt      0x0000000000000000        0x0 src/main.o
+ .rel.text      0x0000000000000000        0x0 src/main.o
+ .rel.data      0x0000000000000000        0x0 src/main.o
+
+.bss            0x0000000000105000    0x228e4
+ *(.bss)
+ .bss           0x0000000000105000        0x0 src/main.o
+ .bss           0x0000000000105000    0x20000 src/pmm.o
+ .bss           0x0000000000125000        0x0 src/cpu_check.o
+ .bss           0x0000000000125000        0x0 src/syscall.o
+ .bss           0x0000000000125000        0x8 src/heap.o
+                0x0000000000125000                heap_end
+                0x0000000000125004                heap
+ *fill*         0x0000000000125008       0x18 
+ .bss           0x0000000000125020       0x30 src/gdt.o
+ .bss           0x0000000000125050        0x4 src/console.o
+                0x0000000000125050                gpos
+ .bss           0x0000000000125054        0x0 src/rtc.o
+ *fill*         0x0000000000125054        0xc 
+ .bss           0x0000000000125060      0x800 src/idt.o
+ .bss           0x0000000000125860        0x0 src/vmm.o
+ .bss           0x0000000000125860        0x4 src/kb.o
+ .bss           0x0000000000125864        0x0 src/string.o
+ .bss           0x0000000000125864        0x0 src/pic.o
+ .bss           0x0000000000125864        0x4 src/timer.o
+                0x0000000000125864                timer_tick
+ .bss           0x0000000000125868        0x0 src/asm.o
+ .bss           0x0000000000125868        0x0 src/interrupt.o
+ .bss           0x0000000000125868     0x2000 src/start.o
+ COMMON         0x0000000000127868       0x24 src/main.o
+                0x0000000000127868                t
+                0x0000000000127880                gdtr
+                0x0000000000127886                idtr
+ *fill*         0x000000000012788c       0x14 
+ COMMON         0x00000000001278a0       0x3c src/cpu_check.o
+                0x00000000001278a0                cpu
+                0x00000000001278d0                cpu_vendor
+ COMMON         0x00000000001278dc        0x8 src/vmm.o
+                0x00000000001278dc                user_context
+                0x00000000001278e0                kernel_context
+                0x0000000000128000                . = ALIGN (0x1000)
+                0x0000000000128000                PROVIDE (kernel_end, ABSOLUTE (.))
+LOAD src/main.o
+LOAD src/pmm.o
+LOAD src/cpu_check.o
+LOAD src/syscall.o
+LOAD src/heap.o
+LOAD src/gdt.o
+LOAD src/console.o
+LOAD src/rtc.o
+LOAD src/idt.o
+LOAD src/vmm.o
+LOAD src/kb.o
+LOAD src/string.o
+LOAD src/pic.o
+LOAD src/timer.o
+LOAD src/asm.o
+LOAD src/interrupt.o
+LOAD src/start.o
+OUTPUT(kernel elf32-i386)
+
+.debug_info     0x0000000000000000     0x2162
+ .debug_info    0x0000000000000000      0x373 src/main.o
+ .debug_info    0x0000000000000373      0x528 src/pmm.o
+ .debug_info    0x000000000000089b      0x18e src/cpu_check.o
+ .debug_info    0x0000000000000a29      0x14b src/syscall.o
+ .debug_info    0x0000000000000b74      0x101 src/heap.o
+ .debug_info    0x0000000000000c75      0x16f src/gdt.o
+ .debug_info    0x0000000000000de4      0x395 src/console.o
+ .debug_info    0x0000000000001179      0x1f4 src/rtc.o
+ .debug_info    0x000000000000136d      0x293 src/idt.o
+ .debug_info    0x0000000000001600      0x402 src/vmm.o
+ .debug_info    0x0000000000001a02      0x1bc src/kb.o
+ .debug_info    0x0000000000001bbe      0x2f5 src/string.o
+ .debug_info    0x0000000000001eb3       0xe3 src/pic.o
+ .debug_info    0x0000000000001f96       0xec src/timer.o
+ .debug_info    0x0000000000002082       0xe0 src/asm.o
+
+.debug_abbrev   0x0000000000000000      0xd19
+ .debug_abbrev  0x0000000000000000       0xfc src/main.o
+ .debug_abbrev  0x00000000000000fc      0x14d src/pmm.o
+ .debug_abbrev  0x0000000000000249       0xf3 src/cpu_check.o
+ .debug_abbrev  0x000000000000033c       0xaf src/syscall.o
+ .debug_abbrev  0x00000000000003eb       0x8d src/heap.o
+ .debug_abbrev  0x0000000000000478       0xed src/gdt.o
+ .debug_abbrev  0x0000000000000565      0x119 src/console.o
+ .debug_abbrev  0x000000000000067e      0x10c src/rtc.o
+ .debug_abbrev  0x000000000000078a      0x12a src/idt.o
+ .debug_abbrev  0x00000000000008b4      0x10a src/vmm.o
+ .debug_abbrev  0x00000000000009be       0xc0 src/kb.o
+ .debug_abbrev  0x0000000000000a7e      0x10f src/string.o
+ .debug_abbrev  0x0000000000000b8d       0x90 src/pic.o
+ .debug_abbrev  0x0000000000000c1d       0x73 src/timer.o
+ .debug_abbrev  0x0000000000000c90       0x89 src/asm.o
+
+.debug_loc      0x0000000000000000      0xd4c
+ .debug_loc     0x0000000000000000       0x2c src/main.o
+ .debug_loc     0x000000000000002c      0x188 src/pmm.o
+ .debug_loc     0x00000000000001b4       0x70 src/cpu_check.o
+ .debug_loc     0x0000000000000224      0x150 src/syscall.o
+ .debug_loc     0x0000000000000374       0x38 src/heap.o
+ .debug_loc     0x00000000000003ac       0x70 src/gdt.o
+ .debug_loc     0x000000000000041c      0x2a0 src/console.o
+ .debug_loc     0x00000000000006bc      0x150 src/rtc.o
+ .debug_loc     0x000000000000080c       0xa8 src/idt.o
+ .debug_loc     0x00000000000008b4       0xe0 src/vmm.o
+ .debug_loc     0x0000000000000994       0xe0 src/kb.o
+ .debug_loc     0x0000000000000a74      0x150 src/string.o
+ .debug_loc     0x0000000000000bc4       0xa8 src/pic.o
+ .debug_loc     0x0000000000000c6c       0x70 src/timer.o
+ .debug_loc     0x0000000000000cdc       0x70 src/asm.o
+
+.debug_aranges  0x0000000000000000      0x1e0
+ .debug_aranges
+                0x0000000000000000       0x20 src/main.o
+ .debug_aranges
+                0x0000000000000020       0x20 src/pmm.o
+ .debug_aranges
+                0x0000000000000040       0x20 src/cpu_check.o
+ .debug_aranges
+                0x0000000000000060       0x20 src/syscall.o
+ .debug_aranges
+                0x0000000000000080       0x20 src/heap.o
+ .debug_aranges
+                0x00000000000000a0       0x20 src/gdt.o
+ .debug_aranges
+                0x00000000000000c0       0x20 src/console.o
+ .debug_aranges
+                0x00000000000000e0       0x20 src/rtc.o
+ .debug_aranges
+                0x0000000000000100       0x20 src/idt.o
+ .debug_aranges
+                0x0000000000000120       0x20 src/vmm.o
+ .debug_aranges
+                0x0000000000000140       0x20 src/kb.o
+ .debug_aranges
+                0x0000000000000160       0x20 src/string.o
+ .debug_aranges
+                0x0000000000000180       0x20 src/pic.o
+ .debug_aranges
+                0x00000000000001a0       0x20 src/timer.o
+ .debug_aranges
+                0x00000000000001c0       0x20 src/asm.o
+
+.debug_line     0x0000000000000000      0x96b
+ .debug_line    0x0000000000000000       0x8b src/main.o
+ .debug_line    0x000000000000008b      0x123 src/pmm.o
+ .debug_line    0x00000000000001ae       0x90 src/cpu_check.o
+ .debug_line    0x000000000000023e       0x54 src/syscall.o
+ .debug_line    0x0000000000000292       0x3e src/heap.o
+ .debug_line    0x00000000000002d0       0x81 src/gdt.o
+ .debug_line    0x0000000000000351      0x16d src/console.o
+ .debug_line    0x00000000000004be       0x94 src/rtc.o
+ .debug_line    0x0000000000000552       0x9a src/idt.o
+ .debug_line    0x00000000000005ec       0xdc src/vmm.o
+ .debug_line    0x00000000000006c8       0xad src/kb.o
+ .debug_line    0x0000000000000775       0xdb src/string.o
+ .debug_line    0x0000000000000850       0x6e src/pic.o
+ .debug_line    0x00000000000008be       0x59 src/timer.o
+ .debug_line    0x0000000000000917       0x54 src/asm.o
+
+.debug_str      0x0000000000000000      0x769
+ .debug_str     0x0000000000000000      0x204 src/main.o
+                                        0x23c (size before relaxing)
+ .debug_str     0x0000000000000204       0xd2 src/pmm.o
+                                        0x2dc (size before relaxing)
+ .debug_str     0x00000000000002d6       0x62 src/cpu_check.o
+                                        0x115 (size before relaxing)
+ .debug_str     0x0000000000000338       0x55 src/syscall.o
+                                         0xf1 (size before relaxing)
+ .debug_str     0x000000000000038d       0x42 src/heap.o
+                                         0xea (size before relaxing)
+ .debug_str     0x00000000000003cf       0x34 src/gdt.o
+                                         0xff (size before relaxing)
+ .debug_str     0x0000000000000403       0xb5 src/console.o
+                                        0x16e (size before relaxing)
+ .debug_str     0x00000000000004b8       0x5a src/rtc.o
+                                        0x10a (size before relaxing)
+ .debug_str     0x0000000000000512       0x4f src/idt.o
+                                        0x10f (size before relaxing)
+ .debug_str     0x0000000000000561       0xb5 src/vmm.o
+                                        0x2db (size before relaxing)
+ .debug_str     0x0000000000000616       0x6c src/kb.o
+                                        0x108 (size before relaxing)
+ .debug_str     0x0000000000000682       0x63 src/string.o
+                                        0x124 (size before relaxing)
+ .debug_str     0x00000000000006e5       0x39 src/pic.o
+                                         0xeb (size before relaxing)
+ .debug_str     0x000000000000071e       0x37 src/timer.o
+                                         0xca (size before relaxing)
+ .debug_str     0x0000000000000755       0x14 src/asm.o
+                                         0xbd (size before relaxing)
+
+.comment        0x0000000000000000       0x2a
+ .comment       0x0000000000000000       0x2a src/main.o
+                                         0x2b (size before relaxing)
+ .comment       0x0000000000000000       0x2b src/pmm.o
+ .comment       0x0000000000000000       0x2b src/cpu_check.o
+ .comment       0x0000000000000000       0x2b src/syscall.o
+ .comment       0x0000000000000000       0x2b src/heap.o
+ .comment       0x0000000000000000       0x2b src/gdt.o
+ .comment       0x0000000000000000       0x2b src/console.o
+ .comment       0x0000000000000000       0x2b src/rtc.o
+ .comment       0x0000000000000000       0x2b src/idt.o
+ .comment       0x0000000000000000       0x2b src/vmm.o
+ .comment       0x0000000000000000       0x2b src/kb.o
+ .comment       0x0000000000000000       0x2b src/string.o
+ .comment       0x0000000000000000       0x2b src/pic.o
+ .comment       0x0000000000000000       0x2b src/timer.o
+ .comment       0x0000000000000000       0x2b src/asm.o
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/main.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/pmm.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/cpu_check.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/syscall.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/heap.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/gdt.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/console.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/rtc.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/idt.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/vmm.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/kb.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/string.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/pic.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/timer.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 src/asm.o

@@ -1,0 +1,60 @@
+
+src/main.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <k_main>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	57                   	push   %edi
+   4:	56                   	push   %esi
+   5:	53                   	push   %ebx
+   6:	83 ec 2c             	sub    $0x2c,%esp
+   9:	e8 fc ff ff ff       	call   a <k_main+0xa>
+   e:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+  15:	e8 fc ff ff ff       	call   16 <k_main+0x16>
+  1a:	e8 fc ff ff ff       	call   1b <k_main+0x1b>
+  1f:	c7 04 24 24 00 00 00 	movl   $0x24,(%esp)
+  26:	e8 fc ff ff ff       	call   27 <k_main+0x27>
+  2b:	e8 fc ff ff ff       	call   2c <k_main+0x2c>
+  30:	c7 04 24 64 00 00 00 	movl   $0x64,(%esp)
+  37:	e8 fc ff ff ff       	call   38 <k_main+0x38>
+  3c:	e8 fc ff ff ff       	call   3d <k_main+0x3d>
+  41:	c7 04 24 64 00 00 00 	movl   $0x64,(%esp)
+  48:	e8 fc ff ff ff       	call   49 <k_main+0x49>
+  4d:	e8 fc ff ff ff       	call   4e <k_main+0x4e>
+  52:	c7 04 24 a4 00 00 00 	movl   $0xa4,(%esp)
+  59:	e8 fc ff ff ff       	call   5a <k_main+0x5a>
+  5e:	e8 fc ff ff ff       	call   5f <k_main+0x5f>
+  63:	8b 3d 14 00 00 00    	mov    0x14,%edi
+  69:	8b 35 10 00 00 00    	mov    0x10,%esi
+  6f:	8b 1d 0c 00 00 00    	mov    0xc,%ebx
+  75:	8b 0d 08 00 00 00    	mov    0x8,%ecx
+  7b:	8b 15 04 00 00 00    	mov    0x4,%edx
+  81:	a1 00 00 00 00       	mov    0x0,%eax
+  86:	89 7c 24 18          	mov    %edi,0x18(%esp)
+  8a:	89 74 24 14          	mov    %esi,0x14(%esp)
+  8e:	89 5c 24 10          	mov    %ebx,0x10(%esp)
+  92:	89 4c 24 0c          	mov    %ecx,0xc(%esp)
+  96:	89 54 24 08          	mov    %edx,0x8(%esp)
+  9a:	89 44 24 04          	mov    %eax,0x4(%esp)
+  9e:	c7 04 24 e4 00 00 00 	movl   $0xe4,(%esp)
+  a5:	e8 fc ff ff ff       	call   a6 <k_main+0xa6>
+  aa:	e8 fc ff ff ff       	call   ab <k_main+0xab>
+  af:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%esp)
+  b6:	00 
+  b7:	c7 04 24 34 01 00 00 	movl   $0x134,(%esp)
+  be:	e8 fc ff ff ff       	call   bf <k_main+0xbf>
+  c3:	8b 45 08             	mov    0x8(%ebp),%eax
+  c6:	89 04 24             	mov    %eax,(%esp)
+  c9:	e8 fc ff ff ff       	call   ca <k_main+0xca>
+  ce:	c7 04 24 74 01 00 00 	movl   $0x174,(%esp)
+  d5:	e8 fc ff ff ff       	call   d6 <k_main+0xd6>
+  da:	8b 45 08             	mov    0x8(%ebp),%eax
+  dd:	89 04 24             	mov    %eax,(%esp)
+  e0:	e8 fc ff ff ff       	call   e1 <k_main+0xe1>
+  e5:	c7 04 24 b4 01 00 00 	movl   $0x1b4,(%esp)
+  ec:	e8 fc ff ff ff       	call   ed <k_main+0xed>
+  f1:	fb                   	sti    
+  f2:	eb fe                	jmp    f2 <k_main+0xf2>

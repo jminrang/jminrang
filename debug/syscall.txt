@@ -1,0 +1,61 @@
+
+src/syscall.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <sys_open>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	b8 00 00 00 00       	mov    $0x0,%eax
+   8:	5d                   	pop    %ebp
+   9:	c3                   	ret    
+
+0000000a <sys_create>:
+   a:	55                   	push   %ebp
+   b:	89 e5                	mov    %esp,%ebp
+   d:	b8 00 00 00 00       	mov    $0x0,%eax
+  12:	5d                   	pop    %ebp
+  13:	c3                   	ret    
+
+00000014 <sys_read>:
+  14:	55                   	push   %ebp
+  15:	89 e5                	mov    %esp,%ebp
+  17:	b8 00 00 00 00       	mov    $0x0,%eax
+  1c:	5d                   	pop    %ebp
+  1d:	c3                   	ret    
+
+0000001e <sys_write>:
+  1e:	55                   	push   %ebp
+  1f:	89 e5                	mov    %esp,%ebp
+  21:	b8 00 00 00 00       	mov    $0x0,%eax
+  26:	5d                   	pop    %ebp
+  27:	c3                   	ret    
+
+00000028 <sys_close>:
+  28:	55                   	push   %ebp
+  29:	89 e5                	mov    %esp,%ebp
+  2b:	b8 00 00 00 00       	mov    $0x0,%eax
+  30:	5d                   	pop    %ebp
+  31:	c3                   	ret    
+
+00000032 <syscall>:
+  32:	55                   	push   %ebp
+  33:	89 e5                	mov    %esp,%ebp
+  35:	83 ec 28             	sub    $0x28,%esp
+  38:	8b 45 08             	mov    0x8(%ebp),%eax
+  3b:	89 45 f4             	mov    %eax,-0xc(%ebp)
+  3e:	8b 45 f4             	mov    -0xc(%ebp),%eax
+  41:	8b 04 85 00 00 00 00 	mov    0x0(,%eax,4),%eax
+  48:	85 c0                	test   %eax,%eax
+  4a:	74 0e                	je     5a <syscall+0x28>
+  4c:	8b 45 f4             	mov    -0xc(%ebp),%eax
+  4f:	8b 04 85 00 00 00 00 	mov    0x0(,%eax,4),%eax
+  56:	ff d0                	call   *%eax
+  58:	eb 13                	jmp    6d <syscall+0x3b>
+  5a:	8b 45 f4             	mov    -0xc(%ebp),%eax
+  5d:	89 44 24 04          	mov    %eax,0x4(%esp)
+  61:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+  68:	e8 fc ff ff ff       	call   69 <syscall+0x37>
+  6d:	c9                   	leave  
+  6e:	c3                   	ret    

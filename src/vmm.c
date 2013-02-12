@@ -2,7 +2,8 @@
 #include "pmm.h"
 #include "multiboot.h"
 
-static struct		vmm_context* kernel_context;
+struct	vmm_context*	kernel_context;
+struct	vmm_context*	user_context;
 
 extern const void	kernel_start;
 extern const void	kernel_end;

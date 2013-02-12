@@ -1,0 +1,38 @@
+
+src/asm.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <outb>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 08             	sub    $0x8,%esp
+   6:	8b 55 08             	mov    0x8(%ebp),%edx
+   9:	8b 45 0c             	mov    0xc(%ebp),%eax
+   c:	66 89 55 fc          	mov    %dx,-0x4(%ebp)
+  10:	88 45 f8             	mov    %al,-0x8(%ebp)
+  13:	0f b6 45 f8          	movzbl -0x8(%ebp),%eax
+  17:	0f b7 55 fc          	movzwl -0x4(%ebp),%edx
+  1b:	ee                   	out    %al,(%dx)
+  1c:	c9                   	leave  
+  1d:	c3                   	ret    
+
+0000001e <inb>:
+  1e:	55                   	push   %ebp
+  1f:	89 e5                	mov    %esp,%ebp
+  21:	53                   	push   %ebx
+  22:	83 ec 14             	sub    $0x14,%esp
+  25:	8b 45 08             	mov    0x8(%ebp),%eax
+  28:	66 89 45 e8          	mov    %ax,-0x18(%ebp)
+  2c:	0f b7 55 e8          	movzwl -0x18(%ebp),%edx
+  30:	66 89 55 ea          	mov    %dx,-0x16(%ebp)
+  34:	0f b7 55 ea          	movzwl -0x16(%ebp),%edx
+  38:	ec                   	in     (%dx),%al
+  39:	89 c3                	mov    %eax,%ebx
+  3b:	88 5d fb             	mov    %bl,-0x5(%ebp)
+  3e:	0f b6 45 fb          	movzbl -0x5(%ebp),%eax
+  42:	83 c4 14             	add    $0x14,%esp
+  45:	5b                   	pop    %ebx
+  46:	5d                   	pop    %ebp
+  47:	c3                   	ret    

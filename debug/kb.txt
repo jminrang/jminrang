@@ -1,0 +1,178 @@
+
+src/kb.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <kb_init>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 18             	sub    $0x18,%esp
+   6:	eb 0c                	jmp    14 <kb_init+0x14>
+   8:	c7 04 24 60 00 00 00 	movl   $0x60,(%esp)
+   f:	e8 fc ff ff ff       	call   10 <kb_init+0x10>
+  14:	c7 04 24 64 00 00 00 	movl   $0x64,(%esp)
+  1b:	e8 fc ff ff ff       	call   1c <kb_init+0x1c>
+  20:	0f b6 c0             	movzbl %al,%eax
+  23:	83 e0 01             	and    $0x1,%eax
+  26:	85 c0                	test   %eax,%eax
+  28:	75 de                	jne    8 <kb_init+0x8>
+  2a:	90                   	nop
+  2b:	c7 04 24 64 00 00 00 	movl   $0x64,(%esp)
+  32:	e8 fc ff ff ff       	call   33 <kb_init+0x33>
+  37:	0f b6 c0             	movzbl %al,%eax
+  3a:	83 e0 02             	and    $0x2,%eax
+  3d:	85 c0                	test   %eax,%eax
+  3f:	75 ea                	jne    2b <kb_init+0x2b>
+  41:	c7 44 24 04 f4 00 00 	movl   $0xf4,0x4(%esp)
+  48:	00 
+  49:	c7 04 24 60 00 00 00 	movl   $0x60,(%esp)
+  50:	e8 fc ff ff ff       	call   51 <kb_init+0x51>
+  55:	c9                   	leave  
+  56:	c3                   	ret    
+
+00000057 <kb_irq>:
+  57:	55                   	push   %ebp
+  58:	89 e5                	mov    %esp,%ebp
+  5a:	83 ec 28             	sub    $0x28,%esp
+  5d:	eb 5f                	jmp    be <kb_irq+0x67>
+  5f:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
+  63:	74 58                	je     bd <kb_irq+0x66>
+  65:	83 7d f0 0a          	cmpl   $0xa,-0x10(%ebp)
+  69:	75 3e                	jne    a9 <kb_irq+0x52>
+  6b:	0f be 45 f7          	movsbl -0x9(%ebp),%eax
+  6f:	89 04 24             	mov    %eax,(%esp)
+  72:	e8 fc ff ff ff       	call   73 <kb_irq+0x1c>
+  77:	c7 04 24 0a 00 00 00 	movl   $0xa,(%esp)
+  7e:	e8 fc ff ff ff       	call   7f <kb_irq+0x28>
+  83:	c7 04 24 73 00 00 00 	movl   $0x73,(%esp)
+  8a:	e8 fc ff ff ff       	call   8b <kb_irq+0x34>
+  8f:	c7 04 24 68 00 00 00 	movl   $0x68,(%esp)
+  96:	e8 fc ff ff ff       	call   97 <kb_irq+0x40>
+  9b:	c7 04 24 3e 00 00 00 	movl   $0x3e,(%esp)
+  a2:	e8 fc ff ff ff       	call   a3 <kb_irq+0x4c>
+  a7:	eb 23                	jmp    cc <kb_irq+0x75>
+  a9:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  ac:	88 45 f7             	mov    %al,-0x9(%ebp)
+  af:	0f be 45 f7          	movsbl -0x9(%ebp),%eax
+  b3:	89 04 24             	mov    %eax,(%esp)
+  b6:	e8 fc ff ff ff       	call   b7 <kb_irq+0x60>
+  bb:	eb 01                	jmp    be <kb_irq+0x67>
+  bd:	90                   	nop
+  be:	e8 fc ff ff ff       	call   bf <kb_irq+0x68>
+  c3:	89 45 f0             	mov    %eax,-0x10(%ebp)
+  c6:	83 7d f0 ff          	cmpl   $0xffffffff,-0x10(%ebp)
+  ca:	75 93                	jne    5f <kb_irq+0x8>
+  cc:	c9                   	leave  
+  cd:	c3                   	ret    
+
+000000ce <kb_char>:
+  ce:	55                   	push   %ebp
+  cf:	89 e5                	mov    %esp,%ebp
+  d1:	83 ec 28             	sub    $0x28,%esp
+  d4:	8b 45 08             	mov    0x8(%ebp),%eax
+  d7:	88 45 f4             	mov    %al,-0xc(%ebp)
+  da:	0f be 45 f4          	movsbl -0xc(%ebp),%eax
+  de:	89 04 24             	mov    %eax,(%esp)
+  e1:	e8 fc ff ff ff       	call   e2 <kb_char+0x14>
+  e6:	c9                   	leave  
+  e7:	c3                   	ret    
+
+000000e8 <kb_input>:
+  e8:	55                   	push   %ebp
+  e9:	89 e5                	mov    %esp,%ebp
+  eb:	83 ec 28             	sub    $0x28,%esp
+  ee:	c7 04 24 64 00 00 00 	movl   $0x64,(%esp)
+  f5:	e8 fc ff ff ff       	call   f6 <kb_input+0xe>
+  fa:	0f b6 c0             	movzbl %al,%eax
+  fd:	89 45 ec             	mov    %eax,-0x14(%ebp)
+ 100:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 103:	83 e0 01             	and    $0x1,%eax
+ 106:	85 c0                	test   %eax,%eax
+ 108:	75 0a                	jne    114 <kb_input+0x2c>
+ 10a:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
+ 10f:	e9 25 01 00 00       	jmp    239 <kb_input+0x151>
+ 114:	c7 04 24 60 00 00 00 	movl   $0x60,(%esp)
+ 11b:	e8 fc ff ff ff       	call   11c <kb_input+0x34>
+ 120:	0f b6 c0             	movzbl %al,%eax
+ 123:	89 45 f4             	mov    %eax,-0xc(%ebp)
+ 126:	81 7d f4 e0 00 00 00 	cmpl   $0xe0,-0xc(%ebp)
+ 12d:	75 17                	jne    146 <kb_input+0x5e>
+ 12f:	a1 00 00 00 00       	mov    0x0,%eax
+ 134:	83 c8 40             	or     $0x40,%eax
+ 137:	a3 00 00 00 00       	mov    %eax,0x0
+ 13c:	b8 00 00 00 00       	mov    $0x0,%eax
+ 141:	e9 f3 00 00 00       	jmp    239 <kb_input+0x151>
+ 146:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 149:	25 80 00 00 00       	and    $0x80,%eax
+ 14e:	85 c0                	test   %eax,%eax
+ 150:	74 45                	je     197 <kb_input+0xaf>
+ 152:	a1 00 00 00 00       	mov    0x0,%eax
+ 157:	83 e0 40             	and    $0x40,%eax
+ 15a:	85 c0                	test   %eax,%eax
+ 15c:	75 08                	jne    166 <kb_input+0x7e>
+ 15e:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 161:	83 e0 7f             	and    $0x7f,%eax
+ 164:	eb 03                	jmp    169 <kb_input+0x81>
+ 166:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 169:	89 45 f4             	mov    %eax,-0xc(%ebp)
+ 16c:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 16f:	05 00 00 00 00       	add    $0x0,%eax
+ 174:	0f b6 00             	movzbl (%eax),%eax
+ 177:	83 c8 40             	or     $0x40,%eax
+ 17a:	0f b6 c0             	movzbl %al,%eax
+ 17d:	f7 d0                	not    %eax
+ 17f:	89 c2                	mov    %eax,%edx
+ 181:	a1 00 00 00 00       	mov    0x0,%eax
+ 186:	21 d0                	and    %edx,%eax
+ 188:	a3 00 00 00 00       	mov    %eax,0x0
+ 18d:	b8 00 00 00 00       	mov    $0x0,%eax
+ 192:	e9 a2 00 00 00       	jmp    239 <kb_input+0x151>
+ 197:	a1 00 00 00 00       	mov    0x0,%eax
+ 19c:	83 e0 40             	and    $0x40,%eax
+ 19f:	85 c0                	test   %eax,%eax
+ 1a1:	74 14                	je     1b7 <kb_input+0xcf>
+ 1a3:	81 4d f4 80 00 00 00 	orl    $0x80,-0xc(%ebp)
+ 1aa:	a1 00 00 00 00       	mov    0x0,%eax
+ 1af:	83 e0 bf             	and    $0xffffffbf,%eax
+ 1b2:	a3 00 00 00 00       	mov    %eax,0x0
+ 1b7:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 1ba:	05 00 00 00 00       	add    $0x0,%eax
+ 1bf:	0f b6 00             	movzbl (%eax),%eax
+ 1c2:	0f b6 d0             	movzbl %al,%edx
+ 1c5:	a1 00 00 00 00       	mov    0x0,%eax
+ 1ca:	09 d0                	or     %edx,%eax
+ 1cc:	a3 00 00 00 00       	mov    %eax,0x0
+ 1d1:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 1d4:	05 00 01 00 00       	add    $0x100,%eax
+ 1d9:	0f b6 00             	movzbl (%eax),%eax
+ 1dc:	0f b6 d0             	movzbl %al,%edx
+ 1df:	a1 00 00 00 00       	mov    0x0,%eax
+ 1e4:	31 d0                	xor    %edx,%eax
+ 1e6:	a3 00 00 00 00       	mov    %eax,0x0
+ 1eb:	a1 00 00 00 00       	mov    0x0,%eax
+ 1f0:	83 e0 03             	and    $0x3,%eax
+ 1f3:	8b 14 85 00 05 00 00 	mov    0x500(,%eax,4),%edx
+ 1fa:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 1fd:	01 d0                	add    %edx,%eax
+ 1ff:	0f b6 00             	movzbl (%eax),%eax
+ 202:	0f b6 c0             	movzbl %al,%eax
+ 205:	89 45 f0             	mov    %eax,-0x10(%ebp)
+ 208:	a1 00 00 00 00       	mov    0x0,%eax
+ 20d:	83 e0 08             	and    $0x8,%eax
+ 210:	85 c0                	test   %eax,%eax
+ 212:	74 22                	je     236 <kb_input+0x14e>
+ 214:	83 7d f0 60          	cmpl   $0x60,-0x10(%ebp)
+ 218:	76 0c                	jbe    226 <kb_input+0x13e>
+ 21a:	83 7d f0 7a          	cmpl   $0x7a,-0x10(%ebp)
+ 21e:	77 06                	ja     226 <kb_input+0x13e>
+ 220:	83 6d f0 20          	subl   $0x20,-0x10(%ebp)
+ 224:	eb 10                	jmp    236 <kb_input+0x14e>
+ 226:	83 7d f0 40          	cmpl   $0x40,-0x10(%ebp)
+ 22a:	76 0a                	jbe    236 <kb_input+0x14e>
+ 22c:	83 7d f0 5a          	cmpl   $0x5a,-0x10(%ebp)
+ 230:	77 04                	ja     236 <kb_input+0x14e>
+ 232:	83 45 f0 20          	addl   $0x20,-0x10(%ebp)
+ 236:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 239:	c9                   	leave  
+ 23a:	c3                   	ret    

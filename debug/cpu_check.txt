@@ -1,0 +1,118 @@
+
+src/cpu_check.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <cpu_check>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	56                   	push   %esi
+   4:	53                   	push   %ebx
+   5:	83 ec 30             	sub    $0x30,%esp
+   8:	c7 44 24 08 28 00 00 	movl   $0x28,0x8(%esp)
+   f:	00 
+  10:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%esp)
+  17:	00 
+  18:	c7 04 24 08 00 00 00 	movl   $0x8,(%esp)
+  1f:	e8 fc ff ff ff       	call   20 <cpu_check+0x20>
+  24:	c7 05 00 00 00 00 03 	movl   $0x3,0x0
+  2b:	00 00 00 
+  2e:	c7 04 24 00 40 00 00 	movl   $0x4000,(%esp)
+  35:	e8 e9 00 00 00       	call   123 <has_eflag>
+  3a:	85 c0                	test   %eax,%eax
+  3c:	74 0a                	je     48 <cpu_check+0x48>
+  3e:	c7 05 00 00 00 00 04 	movl   $0x4,0x0
+  45:	00 00 00 
+  48:	c7 45 e4 00 00 00 00 	movl   $0x0,-0x1c(%ebp)
+  4f:	8b 45 e4             	mov    -0x1c(%ebp),%eax
+  52:	0f a2                	cpuid  
+  54:	89 c6                	mov    %eax,%esi
+  56:	89 75 f4             	mov    %esi,-0xc(%ebp)
+  59:	89 1d 00 00 00 00    	mov    %ebx,0x0
+  5f:	89 15 04 00 00 00    	mov    %edx,0x4
+  65:	89 0d 08 00 00 00    	mov    %ecx,0x8
+  6b:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
+  6f:	74 67                	je     d8 <cpu_check+0xd8>
+  71:	81 7d f4 ff ff 00 00 	cmpl   $0xffff,-0xc(%ebp)
+  78:	77 5e                	ja     d8 <cpu_check+0xd8>
+  7a:	c7 45 e4 01 00 00 00 	movl   $0x1,-0x1c(%ebp)
+  81:	8b 45 e4             	mov    -0x1c(%ebp),%eax
+  84:	0f a2                	cpuid  
+  86:	89 c6                	mov    %eax,%esi
+  88:	89 75 f0             	mov    %esi,-0x10(%ebp)
+  8b:	89 0d 18 00 00 00    	mov    %ecx,0x18
+  91:	89 15 08 00 00 00    	mov    %edx,0x8
+  97:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  9a:	c1 e8 08             	shr    $0x8,%eax
+  9d:	83 e0 0f             	and    $0xf,%eax
+  a0:	a3 00 00 00 00       	mov    %eax,0x0
+  a5:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  a8:	c1 e8 04             	shr    $0x4,%eax
+  ab:	83 e0 0f             	and    $0xf,%eax
+  ae:	a3 04 00 00 00       	mov    %eax,0x4
+  b3:	a1 00 00 00 00       	mov    0x0,%eax
+  b8:	83 f8 05             	cmp    $0x5,%eax
+  bb:	76 1b                	jbe    d8 <cpu_check+0xd8>
+  bd:	a1 04 00 00 00       	mov    0x4,%eax
+  c2:	8b 55 f0             	mov    -0x10(%ebp),%edx
+  c5:	c1 ea 10             	shr    $0x10,%edx
+  c8:	c1 e2 04             	shl    $0x4,%edx
+  cb:	81 e2 ff 00 00 00    	and    $0xff,%edx
+  d1:	01 d0                	add    %edx,%eax
+  d3:	a3 04 00 00 00       	mov    %eax,0x4
+  d8:	c7 45 e4 00 00 00 80 	movl   $0x80000000,-0x1c(%ebp)
+  df:	8b 45 e4             	mov    -0x1c(%ebp),%eax
+  e2:	0f a2                	cpuid  
+  e4:	89 c6                	mov    %eax,%esi
+  e6:	89 75 ec             	mov    %esi,-0x14(%ebp)
+  e9:	81 7d ec 00 00 00 80 	cmpl   $0x80000000,-0x14(%ebp)
+  f0:	76 2a                	jbe    11c <cpu_check+0x11c>
+  f2:	81 7d ec ff ff 00 80 	cmpl   $0x8000ffff,-0x14(%ebp)
+  f9:	77 21                	ja     11c <cpu_check+0x11c>
+  fb:	c7 45 e8 01 00 00 80 	movl   $0x80000001,-0x18(%ebp)
+ 102:	8b 45 e8             	mov    -0x18(%ebp),%eax
+ 105:	89 c6                	mov    %eax,%esi
+ 107:	89 f0                	mov    %esi,%eax
+ 109:	0f a2                	cpuid  
+ 10b:	89 c6                	mov    %eax,%esi
+ 10d:	89 75 e8             	mov    %esi,-0x18(%ebp)
+ 110:	89 0d 20 00 00 00    	mov    %ecx,0x20
+ 116:	89 15 0c 00 00 00    	mov    %edx,0xc
+ 11c:	83 c4 30             	add    $0x30,%esp
+ 11f:	5b                   	pop    %ebx
+ 120:	5e                   	pop    %esi
+ 121:	5d                   	pop    %ebp
+ 122:	c3                   	ret    
+
+00000123 <has_eflag>:
+ 123:	55                   	push   %ebp
+ 124:	89 e5                	mov    %esp,%ebp
+ 126:	56                   	push   %esi
+ 127:	53                   	push   %ebx
+ 128:	83 ec 10             	sub    $0x10,%esp
+ 12b:	8b 45 08             	mov    0x8(%ebp),%eax
+ 12e:	9c                   	pushf  
+ 12f:	9c                   	pushf  
+ 130:	5e                   	pop    %esi
+ 131:	89 f3                	mov    %esi,%ebx
+ 133:	31 c3                	xor    %eax,%ebx
+ 135:	53                   	push   %ebx
+ 136:	9d                   	popf   
+ 137:	9c                   	pushf  
+ 138:	5b                   	pop    %ebx
+ 139:	9d                   	popf   
+ 13a:	89 75 f4             	mov    %esi,-0xc(%ebp)
+ 13d:	89 5d f0             	mov    %ebx,-0x10(%ebp)
+ 140:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 143:	8b 55 f4             	mov    -0xc(%ebp),%edx
+ 146:	31 d0                	xor    %edx,%eax
+ 148:	23 45 08             	and    0x8(%ebp),%eax
+ 14b:	85 c0                	test   %eax,%eax
+ 14d:	0f 95 c0             	setne  %al
+ 150:	0f b6 c0             	movzbl %al,%eax
+ 153:	83 c4 10             	add    $0x10,%esp
+ 156:	5b                   	pop    %ebx
+ 157:	5e                   	pop    %esi
+ 158:	5d                   	pop    %ebp
+ 159:	c3                   	ret    

@@ -48,6 +48,9 @@ void k_main(struct mb_info_t *mb_info)
 	vmm_init(mb_info);
 	kprintf(VMM);
 
+//	if(mb_info->mods_count > 0);
+//		kprintf("adfaf");
+
 	asm volatile ("sti");
 
 //	data structure list sample ;

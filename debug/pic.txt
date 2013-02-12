@@ -1,0 +1,90 @@
+
+src/pic.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <pic_init>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 18             	sub    $0x18,%esp
+   6:	c7 44 24 04 11 00 00 	movl   $0x11,0x4(%esp)
+   d:	00 
+   e:	c7 04 24 20 00 00 00 	movl   $0x20,(%esp)
+  15:	e8 fc ff ff ff       	call   16 <pic_init+0x16>
+  1a:	c7 44 24 04 11 00 00 	movl   $0x11,0x4(%esp)
+  21:	00 
+  22:	c7 04 24 a0 00 00 00 	movl   $0xa0,(%esp)
+  29:	e8 fc ff ff ff       	call   2a <pic_init+0x2a>
+  2e:	c7 44 24 04 20 00 00 	movl   $0x20,0x4(%esp)
+  35:	00 
+  36:	c7 04 24 21 00 00 00 	movl   $0x21,(%esp)
+  3d:	e8 fc ff ff ff       	call   3e <pic_init+0x3e>
+  42:	c7 44 24 04 28 00 00 	movl   $0x28,0x4(%esp)
+  49:	00 
+  4a:	c7 04 24 a1 00 00 00 	movl   $0xa1,(%esp)
+  51:	e8 fc ff ff ff       	call   52 <pic_init+0x52>
+  56:	c7 44 24 04 04 00 00 	movl   $0x4,0x4(%esp)
+  5d:	00 
+  5e:	c7 04 24 21 00 00 00 	movl   $0x21,(%esp)
+  65:	e8 fc ff ff ff       	call   66 <pic_init+0x66>
+  6a:	c7 44 24 04 02 00 00 	movl   $0x2,0x4(%esp)
+  71:	00 
+  72:	c7 04 24 a1 00 00 00 	movl   $0xa1,(%esp)
+  79:	e8 fc ff ff ff       	call   7a <pic_init+0x7a>
+  7e:	c7 44 24 04 01 00 00 	movl   $0x1,0x4(%esp)
+  85:	00 
+  86:	c7 04 24 21 00 00 00 	movl   $0x21,(%esp)
+  8d:	e8 fc ff ff ff       	call   8e <pic_init+0x8e>
+  92:	c7 44 24 04 01 00 00 	movl   $0x1,0x4(%esp)
+  99:	00 
+  9a:	c7 04 24 a1 00 00 00 	movl   $0xa1,(%esp)
+  a1:	e8 fc ff ff ff       	call   a2 <pic_init+0xa2>
+  a6:	c7 44 24 04 fb 00 00 	movl   $0xfb,0x4(%esp)
+  ad:	00 
+  ae:	c7 04 24 21 00 00 00 	movl   $0x21,(%esp)
+  b5:	e8 fc ff ff ff       	call   b6 <pic_init+0xb6>
+  ba:	c7 44 24 04 ff 00 00 	movl   $0xff,0x4(%esp)
+  c1:	00 
+  c2:	c7 04 24 a1 00 00 00 	movl   $0xa1,(%esp)
+  c9:	e8 fc ff ff ff       	call   ca <pic_init+0xca>
+  ce:	c9                   	leave  
+  cf:	c3                   	ret    
+
+000000d0 <pic_mask_irq>:
+  d0:	55                   	push   %ebp
+  d1:	89 e5                	mov    %esp,%ebp
+  d3:	83 ec 28             	sub    $0x28,%esp
+  d6:	8b 45 08             	mov    0x8(%ebp),%eax
+  d9:	66 89 45 f4          	mov    %ax,-0xc(%ebp)
+  dd:	0f b7 45 f4          	movzwl -0xc(%ebp),%eax
+  e1:	0f b6 c0             	movzbl %al,%eax
+  e4:	89 44 24 04          	mov    %eax,0x4(%esp)
+  e8:	c7 04 24 21 00 00 00 	movl   $0x21,(%esp)
+  ef:	e8 fc ff ff ff       	call   f0 <pic_mask_irq+0x20>
+  f4:	0f b7 45 f4          	movzwl -0xc(%ebp),%eax
+  f8:	0f b6 c0             	movzbl %al,%eax
+  fb:	c1 f8 08             	sar    $0x8,%eax
+  fe:	0f b6 c0             	movzbl %al,%eax
+ 101:	89 44 24 04          	mov    %eax,0x4(%esp)
+ 105:	c7 04 24 a1 00 00 00 	movl   $0xa1,(%esp)
+ 10c:	e8 fc ff ff ff       	call   10d <pic_mask_irq+0x3d>
+ 111:	c9                   	leave  
+ 112:	c3                   	ret    
+
+00000113 <pic_send_end_int>:
+ 113:	55                   	push   %ebp
+ 114:	89 e5                	mov    %esp,%ebp
+ 116:	83 ec 18             	sub    $0x18,%esp
+ 119:	c7 44 24 04 20 00 00 	movl   $0x20,0x4(%esp)
+ 120:	00 
+ 121:	c7 04 24 20 00 00 00 	movl   $0x20,(%esp)
+ 128:	e8 fc ff ff ff       	call   129 <pic_send_end_int+0x16>
+ 12d:	83 7d 08 0b          	cmpl   $0xb,0x8(%ebp)
+ 131:	76 14                	jbe    147 <pic_send_end_int+0x34>
+ 133:	c7 44 24 04 20 00 00 	movl   $0x20,0x4(%esp)
+ 13a:	00 
+ 13b:	c7 04 24 a0 00 00 00 	movl   $0xa0,(%esp)
+ 142:	e8 fc ff ff ff       	call   143 <pic_send_end_int+0x30>
+ 147:	c9                   	leave  
+ 148:	c3                   	ret    

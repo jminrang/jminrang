@@ -41,7 +41,7 @@ clean:
 
 t:		test
 test:
-	@qemu-system-x86_64 -kernel kernel -M pc -m 1024 -s -monitor stdio -no-reboot -no-shutdown
+	@qemu-system-x86_64 -kernel kernel -M pc -m 1024 -s -monitor stdio -no-reboot -no-shutdown -initrd make_initrd
 
 g:		gdb
 gdb:	$(TARGET)	.gdbinit
